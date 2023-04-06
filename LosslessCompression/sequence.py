@@ -234,12 +234,13 @@ def lossless_comp():
 
     text.close()
 
-    seq = open('sequence.txt', 'w')
-    with open('sequence.txt', 'w') as seq:
-        seq.write(' '.join(map(str, [original_sequence_1, original_sequence_2, original_sequence_3,
-                                     original_sequence_4, original_sequence_5, original_sequence_6,
-                                     original_sequence_7, original_sequence_8])))
-    seq.close()
+    sequence_file = open('sequence.txt', 'w')
+    original_sequences = [original_sequence_1, original_sequence_2, original_sequence_3, original_sequence_4,
+                          original_sequence_5, original_sequence_6, original_sequence_7, original_sequence_8]
+    sequence_file.write(str(original_sequences))
+    sequence_file.close()
+
+    text.close()
 
     text.close()
 
