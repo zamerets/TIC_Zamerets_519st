@@ -2,6 +2,7 @@ import ast
 import collections
 import math
 from matplotlib import pyplot as plt
+import chardet
 
 open("results_rle_lzw.txt", "w")
 list_of_results = []
@@ -66,7 +67,7 @@ def main():
         counter = collections.Counter(sequence)
         probability = {symbol: count / N_sequence for symbol, count in counter.items()}
         entropy = -sum(p * math.log2(p) for p in probability.values())
-
+        entropy = round(entropy, 2)
         file = open("results_rle_lzw.txt", "a")
         file.write('Оригінальна послідовність: {0}\n'.format(str(sequence)))
         file.write('Розмір оригінальної послідовності: {0} bits\n'.format(str(len(sequence) * 16)))
@@ -117,7 +118,6 @@ def main():
             file.write(f"Коефіціент стиснення LZW: {compression_ratio_lzw} \n")
             file.close()
 
-
         decoded_result_lzw = decode_lzw(encoded_result)
         with open("results_rle_lzw.txt", "a") as file:
             file.write(f"Декодована LZW послідовність:{''.join(map(str, decoded_result_lzw))} \n")
@@ -137,7 +137,8 @@ def main():
 
     table.set_fontsize(14)
     table.scale(0.8, 2)
-    ax.text(0.5, 0.95, 'Результати стиснення методами RLE та LZW', transform=ax.transAxes, ha='center', va='top', fontsize=14)
+    ax.text(0.5, 0.95, 'Результати стиснення методами RLE та LZW', transform=ax.transAxes, ha='center', va='top',
+            fontsize=14)
 
     fig.savefig('Результати стиснення методами RLE та LZW' + '.jpg', dpi=600)
 
@@ -173,3 +174,12 @@ def decode_lzw(sequence):
 
 if "__main__" == __name__:
     main()
+
+with open("results_rle_lzw.txt", "rb") as f:
+    data = f.read()
+result = chardet.detect(data)
+encoding = result['encoding']
+with open("results_rle_lzw.txt", "r", encoding=encoding) as f:
+    data = f.read()
+with open("results_rle_lzw.txt", "w", encoding='utf-8') as f:
+    f.write(data)
